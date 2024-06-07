@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cherrylabs Health Bot</title>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+</head>
+<body>
+    <div id="webchat" role="main"></div>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const userID = 'your-user-id-here'; // Use a unique user ID from your system or one
+            const username = 'your-username-here'; // Use the user's name or a default name
+
+            const store = window.WebChat.createStore();
+
+            const postActivityMiddleware = () => next => async (activity) => {
+                const result = await next(activity);
+                const { offsetHeight, scrollHeight } = document.getElementById('webchat');
+                document.getElementById('webchat').scrollTop = scrollHeight - offsetHeight;
+                return result;
+            };
+
+            window.WebChat.renderWebChat(
+                {
+                    directLine: window.WebChat.createDirectLine({
+                        secret: 'd98upuqs7ps.9fy0ygu232GxfojNVAiulrLX8peBufhxoslfgasmEx8'
+                    }),
+                    userID: userID,
+                    username: username,
+                    locale: 'en-IN',
+                    botAvatarInitials: 'Bot',
+                    userAvatarInitials: 'User',
+                    store,
+                    postActivityMiddleware
+                },
+                document.getElementById('webchat')
+            );
+
+        });
+    </script>
+</body>
+</html>
